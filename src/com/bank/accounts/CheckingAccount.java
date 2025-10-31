@@ -11,6 +11,6 @@ public class CheckingAccount extends BankAccount {
     }
 
     public double calculateInterest(){
-        return balance * interestRate; // حساب جاری معمولاً سود ندارد
+        return getBalance() * interestRate; // حساب جاری معمولاً سود ندارد
     }
 }

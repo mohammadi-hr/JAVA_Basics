@@ -12,6 +12,6 @@ public class SavingsAccount extends BankAccount {
     }
 
     public double calculateInterest(){
-        return balance * accountInterestRate;
+        return getBalance() * accountInterestRate;
     }
 }
