@@ -6,8 +6,8 @@ public class CheckingAccount extends BankAccount {
 
     private double interestRate = 0;
 
-    public CheckingAccount(double initialBalance){
-        super(initialBalance, AccountType.CHECKING);
+    public CheckingAccount(double initialBalance, String accountNumber){
+        super(initialBalance, AccountType.CHECKING, accountNumber);
     }
 
     public double calculateInterest(){

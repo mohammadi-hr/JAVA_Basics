@@ -39,10 +39,10 @@ public class BankApplication {
 //-----------------------------------------------------------
 
         List<BankAccount> bankAccounts = Arrays.asList(
-                new SavingsAccount(10000, 14),
-                new CheckingAccount(550000),
-                new SavingsAccount(100, 23),
-                new SavingsAccount(1052, 24)
+                new SavingsAccount(10000, 14, "6037 1478 1478 1478"),
+                new CheckingAccount(550000, "6037 1234 1234 1234"),
+                new SavingsAccount(100, 23, "6039 5625 1421 4254 1245"),
+                new SavingsAccount(1052, 24, "4514 1412 4125 6698")
         );
 
 //        ----------------------------------------
@@ -82,5 +82,37 @@ public class BankApplication {
         for(Transaction t : filterd) {
             System.out.println(t);
         }
+
+
+//        -----------------------------------------------
+//        Using Lambda for transactions in banking system by Runnable
+//        -----------------------------------------------
+
+        Runnable deposit_tank = new Runnable() {
+            @Override
+            public void run() {
+                bankAccounts.get(0).diposit(5100);
+            }
+        };
+
+        Runnable withdraw_task = () -> bankAccounts.get(1).withdraw(10500);
+
+//        ---------------------------------------------
+//        Create threads from runnable tanks
+//        ---------------------------------------------
+
+        Thread tw = new Thread(withdraw_task, "withdraw_thread");
+        Thread td = new Thread(deposit_tank, "deposit_thread");
+
+        tw.start();
+        td.start();
+
+        try{
+            tw.join();
+            td.join();
+        }catch (InterruptedException e){
+            e.fillInStackTrace();
+        }
+
     }
 }

@@ -9,12 +9,14 @@ public abstract class BankAccount {
     private double balance;
     private AccountType accountType;
     private boolean accountStatus = true;
+    private String accountNumber;
     private TransactionHistory transactionHistory = null;
 
 
-    public BankAccount(double initialBalance, AccountType initialAccountType){
+    public BankAccount(double initialBalance, AccountType initialAccountType, String accountNumber){
         this.balance = initialBalance;
         this.accountType = initialAccountType;
+        this.accountNumber = accountNumber;
         transactionHistory = new TransactionHistory();
     }
 
@@ -26,18 +28,30 @@ public abstract class BankAccount {
         return accountType;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
     public boolean getAccountStaus() {
         return accountStatus;
     }
 
-    public void diposit(double amount) {
-        if(amount > 0)
+    public synchronized void diposit(double amount) {
+        if(amount > 0){
             balance += amount;
+            System.out.println(Thread.currentThread().getName() + " deposit " + amount + " to " + this.accountNumber + " New Balance : " + balance);
+        }
+
     }
 
-    public void withdraw(double amount) {
-        if (amount > 0 && amount <= balance)
+    public synchronized void withdraw(double amount) {
+        if (amount > 0 && amount <= balance){
             balance -= amount;
+            System.out.println(Thread.currentThread().getName() + " withdraw " + amount + " from " + this.accountNumber + " New Balance : " + balance);
+        }else{
+            System.out.println(Thread.currentThread().getName() + " trying to withdraw " + amount + " from " + this.accountNumber + " Insufficient funds ");
+        }
+
     }
 
     public  TransactionHistory getTransactionHistory(){
