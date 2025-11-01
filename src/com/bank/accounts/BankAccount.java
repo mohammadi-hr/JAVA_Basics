@@ -9,12 +9,13 @@ public abstract class BankAccount {
     private double balance;
     private AccountType accountType;
     private boolean accountStatus = true;
-    private TransactionHistory transactionHistory;
+    private TransactionHistory transactionHistory = null;
 
 
     public BankAccount(double initialBalance, AccountType initialAccountType){
         this.balance = initialBalance;
         this.accountType = initialAccountType;
+        transactionHistory = new TransactionHistory();
     }
 
     public double getBalance() {
