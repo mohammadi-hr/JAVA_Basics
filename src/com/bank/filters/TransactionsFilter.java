@@ -53,7 +53,7 @@ public class TransactionsFilter {
 //    ----------------------------------------------------------------------------------------------------
 
 
-    public static List<Transaction> filter(List<Transaction> transactions, TransactionWithdrawPredicate twp){
+    public static List<Transaction> filter(List<Transaction> transactions, TransactionPredicate twp){
         List<Transaction> result = new ArrayList<>();
         for (Transaction t : transactions){
             if (twp.checkTransaction(t)){
