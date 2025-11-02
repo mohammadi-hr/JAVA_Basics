@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class BankApplication {
     public static void main(String[] args){
@@ -39,10 +43,10 @@ public class BankApplication {
 //-----------------------------------------------------------
 
         List<BankAccount> bankAccounts = Arrays.asList(
-                new SavingsAccount(10000, 14, "6037 1478 1478 1478"),
-                new CheckingAccount(550000, "6037 1234 1234 1234"),
-                new SavingsAccount(100, 23, "6039 5625 1421 4254 1245"),
-                new SavingsAccount(1052, 24, "4514 1412 4125 6698")
+                new SavingsAccount(10000, 14),
+                new CheckingAccount(550000),
+                new SavingsAccount(100, 23),
+                new SavingsAccount(1052, 24)
         );
 
 //        ----------------------------------------
@@ -77,9 +81,11 @@ public class BankApplication {
         );
 
 
-        List<Transaction> filterd = TransactionsFilter.filter(transactions, new TransactionWithdrawPredicate());
+        List<Transaction> filteBy_behavior_parameterized = TransactionsFilter.filter(transactions, new TransactionWithdrawPredicate());
 
-        for(Transaction t : filterd) {
+        List<Transaction> filterByType_lmbda = TransactionsFilter.filter(transactions, (Transaction t) -> "withdraw".equals(t.getType()));
+
+        for(Transaction t : filterByType_lmbda) {
             System.out.println(t);
         }
 
@@ -113,6 +119,20 @@ public class BankApplication {
         }catch (InterruptedException e){
             e.fillInStackTrace();
         }
+
+//        ---------------------------------------
+//        Functional Interfaces
+//        ---------------------------------------
+
+        Predicate<BankAccount> isHighBalanced = acc -> acc.getBalance() > 1000;
+
+        Consumer<BankAccount> prettyPrint = acc -> {
+            System.out.println(acc.getAccountNumber()+ " : " + (acc.getBalance() > 1000? " HighBalance " : " LowBalance "));
+        };
+
+        Function<BankAccount, String> getBankAccountID = acc -> acc.getAccountNumber();
+
+//        Supplier<String> accountNumberGenerator = () -> " 6037 " + ;
 
     }
 }

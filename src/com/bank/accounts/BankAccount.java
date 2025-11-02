@@ -13,10 +13,9 @@ public abstract class BankAccount {
     private TransactionHistory transactionHistory = null;
 
 
-    public BankAccount(double initialBalance, AccountType initialAccountType, String accountNumber){
+    public BankAccount(double initialBalance, AccountType initialAccountType){
         this.balance = initialBalance;
         this.accountType = initialAccountType;
-        this.accountNumber = accountNumber;
         transactionHistory = new TransactionHistory();
     }
 
@@ -30,6 +29,10 @@ public abstract class BankAccount {
 
     public String getAccountNumber() {
         return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public boolean getAccountStaus() {
@@ -60,6 +63,8 @@ public abstract class BankAccount {
 
     // متد انتزاعی برای محاسبه سود
     public abstract double calculateInterest();
+
+    protected abstract String accountNoGenerator();
 
     public void printAccountInfo(){
         System.out.println("Account Type : "+ accountType);
