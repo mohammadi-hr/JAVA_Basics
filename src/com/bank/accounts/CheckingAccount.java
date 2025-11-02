@@ -3,6 +3,7 @@ import com.bank.enums.AccountType;
 import com.bank.accounts.BankAccount;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class CheckingAccount extends BankAccount {
 
@@ -20,14 +21,21 @@ public class CheckingAccount extends BankAccount {
 
     @Override
     protected String accountNoGenerator(){
-        String charList = "0123456789";
+
+        Random rand = new Random();
         StringBuilder accNo = new StringBuilder();
+
         while (accNo.length() < 12){
-            int index = (int) (Math.random() * 10) ;
-            accNo.append(charList.charAt(index));
+
+            accNo.append(rand.nextInt(10));
         }
 
-        return CHECKING_ACCOUNT_IDENTIFIER + accNo.toString();
+        String final_accNo = CHECKING_ACCOUNT_IDENTIFIER + accNo.toString();
+
+        Supplier<String> accNo_created_at_log = () -> final_accNo + " created at : " + System.currentTimeMillis();
+        System.out.println(accNo_created_at_log.get());
+
+        return final_accNo;
     }
 
 

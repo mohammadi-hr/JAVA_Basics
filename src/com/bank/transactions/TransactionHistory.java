@@ -13,6 +13,10 @@ public class TransactionHistory {
         return transactions;
     }
 
+    public void add(Transaction t){
+        transactions.add(t);
+    }
+
     public void printTransactions(){
         if(transactions.isEmpty()){
             System.out.println("No Transactions yet.");

@@ -10,6 +10,11 @@ public abstract class BankAccount {
     private AccountType accountType;
     private boolean accountStatus = true;
     private String accountNumber;
+
+    public void setTransactionHistory(TransactionHistory transactionHistory) {
+        this.transactionHistory = transactionHistory;
+    }
+
     private TransactionHistory transactionHistory = null;
 
 
@@ -21,6 +26,10 @@ public abstract class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public AccountType getAccountType() {

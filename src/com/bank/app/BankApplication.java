@@ -1,22 +1,21 @@
 package com.bank.app;
 import com.bank.accounts.*;
+import com.bank.customers.Customer;
 import com.bank.filters.TransactionWithdrawPredicate;
 import com.bank.filters.TransactionsFilter;
 import com.bank.transactions.Transaction;
+import com.bank.transactions.TransactionHistory;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class BankApplication {
     public static void main(String[] args){
 
-        System.out.printf("Hello and welcome! To Learn JAVA Programming Language by Back Account System Examples");
+        System.out.println("Hello and welcome! To Learn JAVA Programming Language by Back Account System Examples");
 
 
 
@@ -124,15 +123,48 @@ public class BankApplication {
 //        Functional Interfaces
 //        ---------------------------------------
 
-        Predicate<BankAccount> isHighBalanced = acc -> acc.getBalance() > 1000;
+//        -------------- فیلتر کردن حساب‌هایی با موجودی بالا برای پیشنهادهای ویژه یا وام--------------
+
+        Predicate<BankAccount> isHighBalanced = acc -> acc.getBalance() > 1000; // شرط گذاری
+
+//        ---------- در ثبت گزارش‌های روزانه یا سیستم مانیتورینگ تراکنش‌ها --------------
 
         Consumer<BankAccount> prettyPrint = acc -> {
-            System.out.println(acc.getAccountNumber()+ " : " + (acc.getBalance() > 1000? " HighBalance " : " LowBalance "));
+            System.out.println(acc.getAccountNumber()+ " : " + (acc.getBalance() > 1000? " HighBalance " : " LowBalance ")); // انجام عمل خاص بر روی داده
         };
 
-        Function<BankAccount, String> getBankAccountID = acc -> acc.getAccountNumber();
+//        ------------ استخراج داده از مدل‌های پیچیده برای گزارش‌گیری یا تحلیل-----------
 
-//        Supplier<String> accountNumberGenerator = () -> " 6037 " + ;
+        Function<BankAccount, String> getBankAccountID = acc -> acc.getAccountNumber(); // تبدیل داده
+
+//        ----------- در پایان سال مالی برای اعمال سود سپرده‌ها------------
+
+        UnaryOperator<BankAccount> applyAnnulaInterest = acc -> { // تغییر در همان نوع
+            acc.setBalance(acc.getBalance() * 0.24);
+            return acc;
+        };
+
+//        ------------- در سیستم انتقال وجه داخلی بین حساب‌ها---------------
+
+        BinaryOperator<BankAccount> transfer = (a1, a2) -> { //عملیات دو ورودی هم‌نوع
+            double amount = 100;
+            a1.setBalance(a1.getBalance() - amount);
+            a2.setBalance(a2.getBalance() + amount);
+
+            return a2;
+        };
+
+//        ----------------------کنترل ریسک و محدودیت تراکنش روزانه-------------------
+
+        BiPredicate<Transaction, Customer> cantranfer = (t, c) -> t.getAmount() >= c.getDailyLimit(); // شرط با دو ورودی
+
+//        ------------------ به‌روزرسانی وضعیت حساب پس از هر تراکنش-------------------
+
+        BiConsumer<Transaction, BankAccount> updateBalance = (t, acc) -> acc.getTransactionHistory().add(t); // نجام عمل با دو ورودی
+
+//        -------------------- محاسبه هزینه کارمزد انتقال وجه------------------
+
+        BiFunction<SavingsAccount, Double, Double> calculateAccFee = (saving_acc, amount) -> amount * ((saving_acc.isPremium())? 0.05 : 0.01);
 
     }
 }
